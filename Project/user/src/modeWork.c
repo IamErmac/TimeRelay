@@ -13,13 +13,31 @@ extern volatile button_t setButton;
 static void sprintfCustom(uint8_t *buf, timeCount_t *data);
 static void updateGUIWorkMode(void);
 
+static void loadNewTimerData(void)
+{
+  if (isTimeUp)
+  {
+    tmpTimer.seconds = timeDown.seconds;
+    tmpTimer.minutes = timeDown.minutes;
+    tmpTimer.hours = timeDown.hours;
+    sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
+    GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
+  }
+  else
+  {
+    tmpTimer.seconds = timeUp.seconds;
+    tmpTimer.minutes = timeUp.minutes;
+    tmpTimer.hours = timeUp.hours;
+    sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
+    GPIO_WriteHigh(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
+  }
+}
+
 void initWorkMode(void){
-  isTimeUp = false;
+  //isTimeUp = false;
+  isTimeUp = true;
   
-  tmpTimer.seconds = timeUp.seconds;
-  tmpTimer.minutes = timeUp.minutes;
-  tmpTimer.hours = timeUp.hours;
-  sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
+  loadNewTimerData();
   
   isGUIUpdated = true;
   setSecondTimerToZero();
@@ -100,22 +118,8 @@ uint8_t handleWorkMode(void){
       
       isTimeUp = !isTimeUp;
       
-      if (isTimeUp)
-      {
-        tmpTimer.seconds = timeDown.seconds;
-        tmpTimer.minutes = timeDown.minutes;
-        tmpTimer.hours = timeDown.hours;
-        
-        GPIO_WriteHigh(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
-      }
-      else
-      {
-        tmpTimer.seconds = timeUp.seconds;
-        tmpTimer.minutes = timeUp.minutes;
-        tmpTimer.hours = timeUp.hours;
-        
-        GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
-      }
+      loadNewTimerData();
+      
       sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
     }
   }
@@ -125,6 +129,7 @@ uint8_t handleWorkMode(void){
     clearButtonEvent(&setButton);
     rc = RC_COMPLETE;
     initWorkMode();
+    GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
   }
   
   updateGUIWorkMode();
