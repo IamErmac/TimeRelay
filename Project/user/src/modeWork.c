@@ -128,7 +128,6 @@ uint8_t handleWorkMode(void){
   {
     clearButtonEvent(&setButton);
     rc = RC_COMPLETE;
-    initWorkMode();
     GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
   }
   
