@@ -1,13 +1,14 @@
 #include "modeWork.h"
 
 //Private defines
+#define HIGH_STATE_START (true)
 //Extern global variables
 extern timeCount_t lowStateTime, highStateTime;
 extern bool isGUIUpdated;
 extern uint8_t indicatorRawDataBuffer[IND_RAW_DATA];
 extern volatile button_t setButton;
 //Static global variables
-static bool isHighStateTime = false;
+static bool isHighStateTime = true;
 static bool isTimerDirectionChanged = false;
 static bool isDot = false;
 static timeCount_t tmpTimer = {0,0,0};
@@ -36,7 +37,12 @@ static void loadNewTimerData(void){
 }
 
 void initWorkMode(void){
+  
+#ifdef HIGH_STATE_START
+  isHighStateTime = true;
+#else
   isHighStateTime = false;
+#endif
   
   loadNewTimerData();
   
