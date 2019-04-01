@@ -8,7 +8,7 @@
 #!/Project/EWSTM8/settings/Project.wsdt
 
 /Project/EWSTM8/*.*
-/Project/EWSTM8/Project.ewd
-/Project/EWSTM8/Project.ewp
-/Project/EWSTM8/Project.ewt
-/Project/EWSTM8/Project.eww
+!/Project/EWSTM8/Project.ewd
+!/Project/EWSTM8/Project.ewp
+!/Project/EWSTM8/Project.ewt
+!/Project/EWSTM8/Project.eww
