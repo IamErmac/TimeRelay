@@ -1,7 +1,13 @@
 #include "modeMain.h"
 
+//Private defines
+//Extern global variables
+//Static global variables
 static modes_e currentMode = MODE_BOOT;
 static modes_e nextMode = MODE_SAME;
+//Static functions prototypes
+//Global varibales
+//-----------------------------------------------------------------------------
 
 void switchMode(void)
 {

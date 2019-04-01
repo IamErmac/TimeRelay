@@ -35,10 +35,6 @@
 #define IND_POINT_PORT          (GPIOD)
 #define IND_POINT_PIN           (GPIO_PIN_2)
 
-#define MCU_FREQ                16000000ul
-
-#define TMR_1_MS_DIV            ((MCU_FREQ/1000)-1)
-
 void initPeriph(void);
 
 #endif //INITPERIPH_H

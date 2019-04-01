@@ -5,16 +5,14 @@
 #include <stdbool.h>
 
 typedef struct{
-	bool isBeingPressed;
-	bool wasPressed;
-	bool isShort;
-	bool isLong;
-    bool isVeryLong;
-	bool isBeingProcessed;
-	bool lastState;
-	bool wasHandled;
-	bool needToSound;
-	uint16_t counter;
+  bool isBeingPressed;
+  bool wasPressed;
+  bool isShort;
+  bool isLong;
+  bool isBeingProcessed;
+  bool lastState;
+  bool wasHandled;
+  uint16_t counter;
 }button_t;
 
 void buttonHandler(volatile button_t *button, bool buttonState);

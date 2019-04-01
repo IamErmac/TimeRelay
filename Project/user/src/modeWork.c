@@ -1,41 +1,42 @@
 #include "modeWork.h"
 
-static bool isTimeUp = false;
-static bool isTimerDirectionChanged = false;
-static bool isDot = false;
-static timeCount_t tmpTimer = {0,0,0};
-
-extern timeCount_t timeUp, timeDown;
+//Private defines
+//Extern global variables
+extern timeCount_t lowStateTime, highStateTime;
 extern bool isGUIUpdated;
 extern uint8_t indicatorRawDataBuffer[IND_RAW_DATA];
 extern volatile button_t setButton;
-
+//Static global variables
+static bool isHighStateTime = false;
+static bool isTimerDirectionChanged = false;
+static bool isDot = false;
+static timeCount_t tmpTimer = {0,0,0};
+//Static functions prototypes
+static void loadNewTimerData(void);
+static void decrementTimer(timeCount_t *time);
 static void sprintfCustom(uint8_t *buf, timeCount_t *data);
 static void updateGUIWorkMode(void);
+//Global varibales
+//-----------------------------------------------------------------------------
 
-static void loadNewTimerData(void)
-{
-  if (isTimeUp)
-  {
-    tmpTimer.seconds = timeDown.seconds;
-    tmpTimer.minutes = timeDown.minutes;
-    tmpTimer.hours = timeDown.hours;
-    sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
-    GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
-  }
-  else
-  {
-    tmpTimer.seconds = timeUp.seconds;
-    tmpTimer.minutes = timeUp.minutes;
-    tmpTimer.hours = timeUp.hours;
+static void loadNewTimerData(void){
+  if (isHighStateTime){
+    tmpTimer.seconds = highStateTime.seconds;
+    tmpTimer.minutes = highStateTime.minutes;
+    tmpTimer.hours = highStateTime.hours;
     sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
     GPIO_WriteHigh(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
+  }else{
+    tmpTimer.seconds = lowStateTime.seconds;
+    tmpTimer.minutes = lowStateTime.minutes;
+    tmpTimer.hours = lowStateTime.hours;
+    sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
+    GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
   }
 }
 
 void initWorkMode(void){
-  //isTimeUp = false;
-  isTimeUp = true;
+  isHighStateTime = false;
   
   loadNewTimerData();
   
@@ -64,8 +65,7 @@ static void decrementTimer(timeCount_t *time){
     isTimerDirectionChanged = true;
 }
 
-static void sprintfCustom(uint8_t *buf, timeCount_t *data)
-{
+static void sprintfCustom(uint8_t *buf, timeCount_t *data){
   if (data->hours){
     buf[0] = data->hours/10;
     buf[1] = data->hours%10;
@@ -103,8 +103,7 @@ uint8_t handleWorkMode(void){
   
   uint8_t rc = RC_NOT_COMPLETE;
 
-  if(isSecondPast())
-  {
+  if(isSecondPast()){
     isDot = !isDot;
     isGUIUpdated = true;
    
@@ -112,20 +111,15 @@ uint8_t handleWorkMode(void){
     
     sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
     
-    if (isTimerDirectionChanged)
-    {
+    if (isTimerDirectionChanged){
       isTimerDirectionChanged = false;
-      
-      isTimeUp = !isTimeUp;
-      
+      isHighStateTime = !isHighStateTime;
       loadNewTimerData();
-      
       sprintfCustom(indicatorRawDataBuffer, &tmpTimer);
     }
   }
   
-  if (setButton.wasPressed && setButton.isLong)
-  {
+  if (setButton.wasPressed && setButton.isLong){
     clearButtonEvent(&setButton);
     rc = RC_COMPLETE;
     GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);

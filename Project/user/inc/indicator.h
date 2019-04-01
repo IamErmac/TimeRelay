@@ -5,8 +5,14 @@
 #include <stdbool.h>
 #include "initPeriph.h"
 
-#define IND_COUNT       3
-#define IND_RAW_DATA    (IND_COUNT*2 + 1)
+ enum{
+  SEG_1 = 0x0,
+  SEG_2,
+  SEG_3,
+  SEG_ALL
+ };
+
+#define IND_RAW_DATA    (SEG_ALL*2 + 1)
 
  enum{
   SYM_0 = 0x3f,
@@ -37,13 +43,7 @@
   SYM_n = 0x54
 };
 
- enum{
-  SEG_1 = 0x01,
-  SEG_2 = 0x02,
-  SEG_3 = 0x03,
- };
- 
- void switchIndicatorDigit(void);
- void updateIndicatorData(uint8_t* str);
+void switchIndicatorDigit(void);
+void updateIndicatorData(uint8_t* str);
 
 #endif //INDICATOR_H

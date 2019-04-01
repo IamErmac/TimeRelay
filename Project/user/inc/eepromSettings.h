@@ -4,8 +4,7 @@
 #include "stm8s.h"
 #include <stdbool.h>
 #include "stateMachine.h"
-
-#include "modeEnter.h"
+#include "counter.h"
 
 void loadSettings(void);
 void saveSettings(void);

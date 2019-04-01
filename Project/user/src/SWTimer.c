@@ -1,12 +1,15 @@
 #include "SWTimer.h"
 
+//Private defines
 #define FLASH_TIME      500
 #define SECOND_TIME     1000
-
+//Extern global variables
+//Static global variables
 static volatile uint16_t flashTimer = 0;
 static volatile uint16_t secondTimer = 0;
-
-//Need to rename to SWTimer
+//Static functions prototypes
+//Global varibales
+//-----------------------------------------------------------------------------
 
 void handleFlashTimer(void){
   if(flashTimer < FLASH_TIME)

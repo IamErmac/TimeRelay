@@ -1,47 +1,50 @@
 #include "modeEnter.h"
 
-#define HIGH_TIME_EDGE (360000ul - 1)
-#define SECONDS_MAX 59
-#define MINUTES_MAX 59
-#define HOURS_MAX 99
-
+//Private defines
+#define HIGH_TIME_EDGE  (360000ul - 1)
+#define SECONDS_MAX     59
+#define MINUTES_MAX     59
+#define HOURS_MAX       99
+//Extern global variables
 extern volatile button_t plusButton, minusButton, setButton;
 extern bool isGUIUpdated;
 extern uint8_t indicatorRawDataBuffer[IND_RAW_DATA];
-
+extern timeCount_t lowStateTime;
+extern timeCount_t highStateTime;
+//Static global variables
 static bool isFlash = false;
-static bool isTimeUp = true;
+static bool isHighStateTime = false;
 static uint8_t currentTime = IND_SEC;
-
-extern timeCount_t timeUp;
-extern timeCount_t timeDown;
-
+//Static functions prototypes
 static void updateGUIEnterMode(void);
+static void incrementData(uint8_t *data, uint8_t edge);
+static void decrementData(uint8_t *data, uint8_t edge);
+static void incrementTime(timeCount_t *time);
+static void decrementTime(timeCount_t *time);
+static void sprintfCustom(uint8_t *buf, timeCount_t *data);
+//Global varibales
+//-----------------------------------------------------------------------------
 
 void initEnterMode(void){
   currentTime = IND_SEC;
-  isTimeUp = true;
+  isHighStateTime = false;
 }
 
 static void incrementData(uint8_t *data, uint8_t edge){
   uint8_t tmp = *data;
-  
   if (tmp < edge)
     tmp++;
   else
     tmp = 0;
-  
   *data = tmp;
 }
 
 static void decrementData(uint8_t *data, uint8_t edge){
   uint8_t tmp = *data;
-  
   if(tmp)
     tmp--;
   else
     tmp = edge;
-  
   *data = tmp;
   //Bug occurs in production hex file. Code below doesn't work
   //if(*data)
@@ -95,7 +98,7 @@ static void sprintfCustom(uint8_t *buf, timeCount_t *data)
     buf[1] = ' ';
   }
   
-  if (isTimeUp)
+  if (isHighStateTime)
     buf[3] = '\0';
   else
     buf[3] = '.';
@@ -110,10 +113,10 @@ uint8_t handleEnterMode(void)
   if (plusButton.wasPressed){
     clearButtonEvent(&plusButton);
     
-    if (isTimeUp)
-      incrementTime(&timeUp);
+    if (isHighStateTime)
+      incrementTime(&highStateTime);
     else
-      incrementTime(&timeDown);
+      incrementTime(&lowStateTime);
     
     isGUIUpdated = true;
   }
@@ -121,10 +124,10 @@ uint8_t handleEnterMode(void)
   if (minusButton.wasPressed){
     clearButtonEvent(&minusButton);
     
-     if (isTimeUp)
-      decrementTime(&timeUp);
+     if (isHighStateTime)
+      decrementTime(&highStateTime);
     else
-      decrementTime(&timeDown);
+      decrementTime(&lowStateTime);
     
     isGUIUpdated = true;
   }
@@ -138,7 +141,7 @@ uint8_t handleEnterMode(void)
       currentTime = IND_SEC;
     
     if (currentTime == IND_SEC)
-      isTimeUp = !isTimeUp;
+      isHighStateTime = !isHighStateTime;
     
     isGUIUpdated = true;
   }
@@ -146,7 +149,7 @@ uint8_t handleEnterMode(void)
   if (setButton.wasPressed && setButton.isLong){
     clearButtonEvent(&setButton);
 
-    if ((timeUp.seconds || timeUp.minutes || timeUp.hours)&&(timeDown.seconds || timeDown.minutes || timeDown.hours)){
+    if ((lowStateTime.seconds || lowStateTime.minutes || lowStateTime.hours)&&(highStateTime.seconds || highStateTime.minutes || highStateTime.hours)){
       rc = RC_COMPLETE;
       //Set mode settings to default before exit
       initEnterMode();
@@ -154,8 +157,7 @@ uint8_t handleEnterMode(void)
     }
   }
 
-  if (isTimeToFlash())
-  {
+  if (isTimeToFlash()){
     isGUIUpdated = true;
     isFlash = !isFlash;
   }
@@ -171,10 +173,10 @@ static void updateGUIEnterMode(void){
   else
     isGUIUpdated = false;
   
-  if (isTimeUp)
-      sprintfCustom(indicatorRawDataBuffer, &timeUp);
+  if (isHighStateTime)
+      sprintfCustom(indicatorRawDataBuffer, &highStateTime);
     else
-      sprintfCustom(indicatorRawDataBuffer, &timeDown);
+      sprintfCustom(indicatorRawDataBuffer, &lowStateTime);
 
   updateIndicatorData(indicatorRawDataBuffer);
 }

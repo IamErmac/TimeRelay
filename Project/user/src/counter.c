@@ -1,4 +1,10 @@
 #include "counter.h"
 
-timeCount_t timeUp = {0, 0, 0};
-timeCount_t timeDown = {0, 0, 0};
+//Private defines
+//Extern global variables
+//Static global variables
+//Static functions prototypes
+//Global varibales
+timeCount_t lowStateTime = {0, 0, 0};
+timeCount_t highStateTime = {0, 0, 0};
+//-----------------------------------------------------------------------------

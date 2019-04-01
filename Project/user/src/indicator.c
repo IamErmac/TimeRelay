@@ -1,10 +1,18 @@
 #include "indicator.h"
 
-uint8_t indicatorBuffer[IND_COUNT];
+//Private defines
+//Extern global variables
+//Static global variables
+//Static functions prototypes
+static void writeDataToIndicator(uint8_t data, uint8_t segment);
+static uint8_t convertASCIIToIndicatorNumber(uint8_t rawDigit);
+//Global varibales
+uint8_t indicatorBuffer[SEG_ALL];
 uint8_t indicatorRawDataBuffer[IND_RAW_DATA];
 bool isGUIUpdated = true;
+//-----------------------------------------------------------------------------
 
-void writeDataToIndicator(uint8_t data, uint8_t segment){
+static void writeDataToIndicator(uint8_t data, uint8_t segment){
   GPIO_WriteHigh(IND_DIGIT_1_PORT, IND_DIGIT_1_PIN);
   GPIO_WriteHigh(IND_DIGIT_2_PORT, IND_DIGIT_2_PIN);
   GPIO_WriteHigh(IND_DIGIT_3_PORT, IND_DIGIT_3_PIN);
@@ -67,18 +75,14 @@ void writeDataToIndicator(uint8_t data, uint8_t segment){
 }
 
 void switchIndicatorDigit(void){
-  
   static uint8_t curDigit = 0;
-  
-  writeDataToIndicator(indicatorBuffer[curDigit], curDigit + 1);
-  
-  if (++curDigit > 3)
+  writeDataToIndicator(indicatorBuffer[curDigit], curDigit);
+  if (++curDigit > SEG_ALL)
     curDigit = 0;
 }
 
 static uint8_t convertASCIIToIndicatorNumber(uint8_t rawDigit){
-  switch(rawDigit)
-  {
+  switch(rawDigit){
     default: return SYM_BLANK;
     case '0': return SYM_0;
     case '1': return SYM_1;
@@ -119,7 +123,7 @@ void updateIndicatorData(uint8_t* str){
   uint8_t currentDigit = convertASCIIToIndicatorNumber('0');
 
   for(uint8_t i = 0; i < IND_RAW_DATA; i++){
-    if (digitCounter == IND_COUNT)
+    if (digitCounter == SEG_ALL)
       break;
     
     if (str[i] == '.'){

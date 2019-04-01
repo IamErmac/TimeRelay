@@ -1,5 +1,14 @@
 #include "initPeriph.h"
 
+//Private defines
+#define MCU_FREQ                16000000ul
+#define TMR_1_MS_DIV            ((MCU_FREQ/1000)-1)
+//Extern global variables
+//Static global variables
+//Static functions prototypes
+//Global varibales
+//-----------------------------------------------------------------------------
+
 void initPeriph(void){
   //Relay init
   GPIO_Init(RELAY_GPIO_PORT, RELAY_GPIO_PIN, GPIO_MODE_OUT_PP_LOW_FAST);
