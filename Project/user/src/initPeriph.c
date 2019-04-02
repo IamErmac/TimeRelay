@@ -3,6 +3,8 @@
 //Private defines
 #define MCU_FREQ                16000000ul
 #define TMR_1_MS_DIV            ((MCU_FREQ/1000)-1)
+#define ROP_OPTION_BYTE_ADDR    0x4800
+#define ROP_OPTION_BYTE_DATA    0xAA
 //Extern global variables
 //Static global variables
 //Static functions prototypes
@@ -40,6 +42,9 @@ void initPeriph(void){
   TIM1_ClearFlag(TIM1_FLAG_UPDATE);
   TIM1_ITConfig(TIM1_IT_UPDATE, ENABLE);
   TIM1_Cmd(ENABLE);
+  //Enable Readout Protection (ROP)
+  if (FLASH_ReadOptionByte(ROP_OPTION_BYTE_ADDR) == ROP_OPTION_BYTE_DATA)
+    FLASH_ProgramOptionByte(ROP_OPTION_BYTE_ADDR, ROP_OPTION_BYTE_DATA);
   //Enable interrupts
   enableInterrupts();
 }
