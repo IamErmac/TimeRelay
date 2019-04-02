@@ -1,6 +1,16 @@
 #include "indicator.h"
 
 //Private defines
+enum{
+  IND_A_POS = (1 << 0),
+  IND_B_POS = (1 << 1),
+  IND_C_POS = (1 << 2),
+  IND_D_POS = (1 << 3),
+  IND_E_POS = (1 << 4),
+  IND_F_POS = (1 << 5),
+  IND_G_POS = (1 << 6),
+  IND_DP_POS = (1 << 7)
+};
 //Extern global variables
 //Static global variables
 //Static functions prototypes
@@ -17,42 +27,42 @@ static void writeDataToIndicator(uint8_t data, uint8_t segment){
   GPIO_WriteHigh(IND_DIGIT_2_PORT, IND_DIGIT_2_PIN);
   GPIO_WriteHigh(IND_DIGIT_3_PORT, IND_DIGIT_3_PIN);
   
-  if(data & 0x01)
+  if(data & IND_A_POS)
     GPIO_WriteHigh(IND_A_PORT, (GPIO_Pin_TypeDef)IND_A_PIN);
   else
     GPIO_WriteLow(IND_A_PORT, (GPIO_Pin_TypeDef)IND_A_PIN);
   
-  if(data & 0x02)
+  if(data & IND_B_POS)
     GPIO_WriteHigh(IND_B_PORT, (GPIO_Pin_TypeDef)IND_B_PIN);
   else
     GPIO_WriteLow(IND_B_PORT, (GPIO_Pin_TypeDef)IND_B_PIN);
     
-  if(data & 0x04)
+  if(data & IND_C_POS)
     GPIO_WriteHigh(IND_C_PORT, (GPIO_Pin_TypeDef)IND_C_PIN);
   else
     GPIO_WriteLow(IND_C_PORT, (GPIO_Pin_TypeDef)IND_C_PIN);
     
-  if(data & 0x08)
+  if(data & IND_D_POS)
     GPIO_WriteHigh(IND_D_PORT, (GPIO_Pin_TypeDef)IND_D_PIN);
   else
     GPIO_WriteLow(IND_D_PORT, (GPIO_Pin_TypeDef)IND_D_PIN);
     
-  if(data & 0x10)
+  if(data & IND_E_POS)
     GPIO_WriteHigh(IND_E_PORT, (GPIO_Pin_TypeDef)IND_E_PIN);
   else
     GPIO_WriteLow(IND_E_PORT, (GPIO_Pin_TypeDef)IND_E_PIN);
     
-  if(data & 0x20)
+  if(data & IND_F_POS)
     GPIO_WriteHigh(IND_F_PORT, (GPIO_Pin_TypeDef)IND_F_PIN);
   else
     GPIO_WriteLow(IND_F_PORT, (GPIO_Pin_TypeDef)IND_F_PIN);
     
-  if(data & 0x40)
+  if(data & IND_G_POS)
     GPIO_WriteHigh(IND_G_PORT, (GPIO_Pin_TypeDef)IND_G_PIN);
   else
     GPIO_WriteLow(IND_G_PORT, (GPIO_Pin_TypeDef)IND_G_PIN);
     
-  if(data & 0x80)
+  if(data & IND_DP_POS)
     GPIO_WriteHigh(IND_POINT_PORT, (GPIO_Pin_TypeDef)IND_POINT_PIN);
   else
     GPIO_WriteLow(IND_POINT_PORT, (GPIO_Pin_TypeDef)IND_POINT_PIN);
