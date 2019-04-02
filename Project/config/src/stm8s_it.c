@@ -239,15 +239,12 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   */
   TIM1_ClearFlag(TIM1_FLAG_UPDATE);
   
-  //isMsCount = true;
-  //handleTimeFunction();
   handleFlashTimer();
   handleSecondTimer();
 
   buttonHandler(&setButton, !GPIO_ReadInputPin(BUTTONS_GPIO_PORT, (GPIO_Pin_TypeDef)BUTTON_SET_GPIO_PIN));
   buttonHandler(&plusButton, !GPIO_ReadInputPin(BUTTONS_GPIO_PORT, (GPIO_Pin_TypeDef)BUTTON_PLUS_GPIO_PIN));
   buttonHandler(&minusButton, !GPIO_ReadInputPin(BUTTONS_GPIO_PORT, (GPIO_Pin_TypeDef)BUTTON_MINUS_GPIO_PIN));
-  //isUpdateTime = true;
 }
 
 /**
