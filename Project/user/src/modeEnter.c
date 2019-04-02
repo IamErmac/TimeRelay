@@ -22,6 +22,8 @@ static void decrementData(uint8_t *data, uint8_t edge);
 static void incrementTime(timeCount_t *time);
 static void decrementTime(timeCount_t *time);
 static void sprintfCustom(uint8_t *buf, timeCount_t *data);
+static void incrementCurrentTime(void);
+static void decrementCurrentTime(void);
 //Global varibales
 //-----------------------------------------------------------------------------
 
@@ -106,14 +108,14 @@ static void sprintfCustom(uint8_t *buf, timeCount_t *data)
   buf[4] = '\0';
 }
 
-void incrementCurrentTime(void){
+static void incrementCurrentTime(void){
   if (isHighStateTime)
     incrementTime(&highStateTime);
   else
     incrementTime(&lowStateTime);
 }
 
-void decrementCurrentTime(void){
+static void decrementCurrentTime(void){
   if (isHighStateTime)
     decrementTime(&highStateTime);
   else
