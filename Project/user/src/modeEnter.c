@@ -106,30 +106,56 @@ static void sprintfCustom(uint8_t *buf, timeCount_t *data)
   buf[4] = '\0';
 }
 
+void incrementCurrentTime(void){
+  if (isHighStateTime)
+    incrementTime(&highStateTime);
+  else
+    incrementTime(&lowStateTime);
+}
+
+void decrementCurrentTime(void){
+  if (isHighStateTime)
+    decrementTime(&highStateTime);
+  else
+    decrementTime(&lowStateTime);
+}
+
 uint8_t handleEnterMode(void)
 {
   uint8_t rc = RC_NOT_COMPLETE;
   
-  if (plusButton.wasPressed){
+  if (plusButton.wasPressed && plusButton.isShort){
     clearButtonEvent(&plusButton);
-    
-    if (isHighStateTime)
-      incrementTime(&highStateTime);
-    else
-      incrementTime(&lowStateTime);
-    
+    incrementCurrentTime();
     isGUIUpdated = true;
   }
   
-  if (minusButton.wasPressed){
-    clearButtonEvent(&minusButton);
-    
-     if (isHighStateTime)
-      decrementTime(&highStateTime);
-    else
-      decrementTime(&lowStateTime);
-    
+  if (plusButton.isBeingPressed && plusButton.isLong){
+    if (isFastCountTime()){
+      incrementCurrentTime();
+      isGUIUpdated = true;
+    }
+  }
+  
+  if(plusButton.wasPressed && plusButton.isLong){
+    clearButtonEvent(&plusButton);
+  }
+  
+  if (minusButton.wasPressed && minusButton.isShort){
+    clearButtonEvent(&plusButton);
+    decrementCurrentTime();
     isGUIUpdated = true;
+  }
+  
+  if (minusButton.isBeingPressed && minusButton.isLong){
+    if (isFastCountTime()){
+      decrementCurrentTime();
+      isGUIUpdated = true;
+    }
+  }
+  
+  if(minusButton.wasPressed && minusButton.isLong){
+    clearButtonEvent(&minusButton);
   }
   
   if (setButton.wasPressed && setButton.isShort){

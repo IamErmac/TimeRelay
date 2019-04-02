@@ -241,6 +241,7 @@ INTERRUPT_HANDLER(TIM1_UPD_OVF_TRG_BRK_IRQHandler, 11)
   
   handleFlashTimer();
   handleSecondTimer();
+  handleFastCountTimer();
 
   buttonHandler(&setButton, !GPIO_ReadInputPin(BUTTONS_GPIO_PORT, (GPIO_Pin_TypeDef)BUTTON_SET_GPIO_PIN));
   buttonHandler(&plusButton, !GPIO_ReadInputPin(BUTTONS_GPIO_PORT, (GPIO_Pin_TypeDef)BUTTON_PLUS_GPIO_PIN));

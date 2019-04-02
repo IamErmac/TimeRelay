@@ -12,5 +12,8 @@ bool isTimeToFlash(void);
 bool isSecondPast(void);
 void setSecondTimerToZero(void);
 void setFlashTimerToZero(void);
+void handleFastCountTimer(void);
+bool isFastCountTime(void);
+void setFastCountTimerToZero(void);
 
 #endif //SWTIMER_H
