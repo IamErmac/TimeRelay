@@ -6,3 +6,4 @@ Board starts at HIGH state. You can undef macro HIGH_STATE_START and rebuild pro
 Board works as time delay relay. It has two states: open and close relay state. User can load time for each state via buttons.
 It starts working after pushing set button for at least 1 second. 
 All user settings are saved in EEPROM memory.
+You can just download hex file and load firware to your board without loading the project.
