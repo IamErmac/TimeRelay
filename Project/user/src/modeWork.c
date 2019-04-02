@@ -125,10 +125,15 @@ uint8_t handleWorkMode(void){
     }
   }
   
-  if (setButton.wasPressed && setButton.isLong){
-    clearButtonEvent(&setButton);
+  if (setButton.isBeingPressed && setButton.isLong && !setButton.wasHandled){
+    setButton.wasHandled = true;
     rc = RC_COMPLETE;
     GPIO_WriteLow(RELAY_GPIO_PORT, RELAY_GPIO_PIN);
+  }
+  
+  //Clear enter mode event
+  if (setButton.wasHandled && setButton.wasPressed){
+    clearButtonEvent(&setButton);
   }
   
   updateGUIWorkMode();

@@ -146,15 +146,19 @@ uint8_t handleEnterMode(void)
     isGUIUpdated = true;
   }
   
-  if (setButton.wasPressed && setButton.isLong){
-    clearButtonEvent(&setButton);
-
+  if (setButton.isBeingPressed && setButton.isLong && !setButton.wasHandled){
+    
+    setButton.wasHandled = true;
     if ((lowStateTime.seconds || lowStateTime.minutes || lowStateTime.hours)&&(highStateTime.seconds || highStateTime.minutes || highStateTime.hours)){
       rc = RC_COMPLETE;
       //Set mode settings to default before exit
       initEnterMode();
       saveSettings();
     }
+  }
+  
+  if (setButton.wasHandled && setButton.wasPressed){
+    clearButtonEvent(&setButton);
   }
 
   if (isTimeToFlash()){
