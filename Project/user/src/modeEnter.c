@@ -50,7 +50,7 @@ static void decrementData(uint8_t *data, uint8_t edge){
   //if(*data)
   //  *data--;
   //else
-  //  *data = tmp;
+  //  *data = edge;
 }
 
 static void incrementTime(timeCount_t *time)

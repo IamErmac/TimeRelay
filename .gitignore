@@ -1,11 +1,9 @@
-/Project/EWSTM8/STM8S003/
-/Project/EWSTM8/STM8S003/Project.dep
-/Project/EWSTM8/STM8S003/BuildLog.log
+/Project/EWSTM8/STM8S003/Exe/*.*
+!/Project/EWSTM8/STM8S003/Exe/*.hex
+/Project/EWSTM8/STM8S003/List/*.*
+/Project/EWSTM8/STM8S003/Obj/*.*
 
 /Project/EWSTM8/settings/*.*
-#!/Project/EWSTM8/settings/Project.dbgbt
-#!/Project/EWSTM8/settings/Project.dnx
-#!/Project/EWSTM8/settings/Project.wsdt
 
 /Project/EWSTM8/*.*
 !/Project/EWSTM8/Project.ewd
