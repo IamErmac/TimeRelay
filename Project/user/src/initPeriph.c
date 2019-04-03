@@ -43,8 +43,10 @@ void initPeriph(void){
   TIM1_ITConfig(TIM1_IT_UPDATE, ENABLE);
   TIM1_Cmd(ENABLE);
   //Enable Readout Protection (ROP)
+#ifndef MEM_PROT_DIS
   if (FLASH_ReadOptionByte(ROP_OPTION_BYTE_ADDR) != ROP_OPTION_BYTE_DATA)
     FLASH_ProgramOptionByte(ROP_OPTION_BYTE_ADDR, ROP_OPTION_BYTE_DATA);
+#endif
   //Enable interrupts
   enableInterrupts();
 }

@@ -189,6 +189,8 @@
                 <option>
                     <name>CCDefines</name>
                     <state>STM8S003</state>
+                    <state>MEM_PROT_DIS</state>
+                    <state>HIGH_STATE_START</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>

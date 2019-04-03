@@ -29,7 +29,7 @@ static void decrementCurrentTime(void);
 
 void initEnterMode(void){
   currentTime = IND_SEC;
-  isHighStateTime = false;
+  isHighStateTime = true;
 }
 
 static void incrementData(uint8_t *data, uint8_t edge){
@@ -101,9 +101,9 @@ static void sprintfCustom(uint8_t *buf, timeCount_t *data)
   }
   
   if (isHighStateTime)
-    buf[3] = '\0';
-  else
     buf[3] = '.';
+  else
+    buf[3] = '\0';
   
   buf[4] = '\0';
 }
@@ -126,38 +126,68 @@ uint8_t handleEnterMode(void)
 {
   uint8_t rc = RC_NOT_COMPLETE;
   
-  if (plusButton.wasPressed && plusButton.isShort){
+  if (isTimeToFlash()){
+    isGUIUpdated = true;
+    isFlash = !isFlash;
+  }
+  
+  if (plusButton.wasPressed && plusButton.isShort && !minusButton.wasPressed && !minusButton.isBeingPressed){
     clearButtonEvent(&plusButton);
     incrementCurrentTime();
     isGUIUpdated = true;
   }
   
-  if (plusButton.isBeingPressed && plusButton.isLong){
+  if (plusButton.isBeingPressed && plusButton.isLong && !minusButton.wasPressed && !minusButton.isBeingPressed){
     if (isFastCountTime()){
       incrementCurrentTime();
       isGUIUpdated = true;
     }
+    isFlash = false;
   }
   
-  if(plusButton.wasPressed && plusButton.isLong){
+  if(plusButton.wasPressed && plusButton.isLong && !minusButton.wasPressed && !minusButton.isBeingPressed){
     clearButtonEvent(&plusButton);
   }
   
-  if (minusButton.wasPressed && minusButton.isShort){
-    clearButtonEvent(&plusButton);
+  if (minusButton.wasPressed && minusButton.isShort && !plusButton.wasPressed && !plusButton.isBeingPressed){
+    clearButtonEvent(&minusButton);
     decrementCurrentTime();
     isGUIUpdated = true;
   }
   
-  if (minusButton.isBeingPressed && minusButton.isLong){
+  if (minusButton.isBeingPressed && minusButton.isLong && !plusButton.wasPressed && !plusButton.isBeingPressed){
     if (isFastCountTime()){
       decrementCurrentTime();
       isGUIUpdated = true;
     }
+    isFlash = false;
   }
   
-  if(minusButton.wasPressed && minusButton.isLong){
+  if(minusButton.wasPressed && minusButton.isLong && !plusButton.wasPressed && !plusButton.isBeingPressed){
     clearButtonEvent(&minusButton);
+  }
+  
+  if (plusButton.isBeingPressed && minusButton.isBeingPressed && 
+      plusButton.isLong && minusButton.isLong && 
+      !plusButton.wasHandled && !minusButton.wasHandled){
+        minusButton.wasHandled = true;
+        plusButton.wasHandled = true;
+        
+      if ((lowStateTime.seconds || lowStateTime.minutes || lowStateTime.hours)&&(highStateTime.seconds || highStateTime.minutes || highStateTime.hours)){
+      rc = RC_COMPLETE;
+      initEnterMode();
+      saveSettings();
+    }
+  }
+  
+  if (plusButton.wasPressed && plusButton.wasHandled && minusButton.wasPressed && minusButton.wasHandled){
+    clearButtonEvent(&plusButton);
+    clearButtonEvent(&minusButton);
+  }
+  
+  if (plusButton.wasPressed && minusButton.wasPressed){
+    clearButtonEvent(&minusButton);
+    clearButtonEvent(&plusButton);
   }
   
   if (setButton.wasPressed && setButton.isShort){
@@ -181,7 +211,6 @@ uint8_t handleEnterMode(void)
       rc = RC_COMPLETE;
       //Set mode settings to default before exit
       initEnterMode();
-      saveSettings();
     }
   }
   
@@ -189,11 +218,6 @@ uint8_t handleEnterMode(void)
     clearButtonEvent(&setButton);
   }
 
-  if (isTimeToFlash()){
-    isGUIUpdated = true;
-    isFlash = !isFlash;
-  }
-  
   updateGUIEnterMode();
    
   return rc;

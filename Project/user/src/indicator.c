@@ -2,14 +2,14 @@
 
 //Private defines
 enum{
-  IND_A_POS = (1 << 0),
-  IND_B_POS = (1 << 1),
-  IND_C_POS = (1 << 2),
-  IND_D_POS = (1 << 3),
-  IND_E_POS = (1 << 4),
-  IND_F_POS = (1 << 5),
-  IND_G_POS = (1 << 6),
-  IND_DP_POS = (1 << 7)
+  IND_A_POS = ((uint8_t)(1 << 0)),
+  IND_B_POS = ((uint8_t)(1 << 1)),
+  IND_C_POS = ((uint8_t)(1 << 2)),
+  IND_D_POS = ((uint8_t)(1 << 3)),
+  IND_E_POS = ((uint8_t)(1 << 4)),
+  IND_F_POS = ((uint8_t)(1 << 5)),
+  IND_G_POS = ((uint8_t)(1 << 6)),
+  IND_DP_POS = ((uint8_t)(1 << 7))
 };
 //Extern global variables
 //Static global variables

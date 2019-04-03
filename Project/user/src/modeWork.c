@@ -1,12 +1,11 @@
 #include "modeWork.h"
 
 //Private defines
-#define HIGH_STATE_START (true)
 //Extern global variables
 extern timeCount_t lowStateTime, highStateTime;
 extern bool isGUIUpdated;
 extern uint8_t indicatorRawDataBuffer[IND_RAW_DATA];
-extern volatile button_t setButton;
+extern volatile button_t plusButton, minusButton, setButton;
 //Static global variables
 static bool isHighStateTime = true;
 static bool isTimerDirectionChanged = false;
@@ -134,6 +133,14 @@ uint8_t handleWorkMode(void){
   //Clear enter mode event
   if (setButton.wasHandled && setButton.wasPressed){
     clearButtonEvent(&setButton);
+  }
+  
+  if (plusButton.wasPressed && plusButton.wasHandled){
+    clearButtonEvent(&plusButton);
+  }
+  
+  if (minusButton.wasPressed && minusButton.wasHandled){
+    clearButtonEvent(&minusButton);
   }
   
   updateGUIWorkMode();
