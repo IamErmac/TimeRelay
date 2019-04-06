@@ -5,18 +5,12 @@
 #include <stdbool.h>
 #include "stateMachine.h"
 #include "button.h"
-#include "indicator.h"
 #include "eepromSettings.h"
 #include "SWTimer.h"
 #include "counter.h"
+#include "counterGUI.h"
 
 void initEnterMode(void);
 uint8_t handleEnterMode(void);
-
-enum{
-  IND_SEC = 0,
-  IND_MIN,
-  IND_HOUR
-};
 
 #endif //MODEENTER_H

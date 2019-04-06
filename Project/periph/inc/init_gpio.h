@@ -1,7 +1,8 @@
-#ifndef INITPERIPH_H
-#define INITPERIPH_H
+#ifndef INIT_GPIO_H
+#define INIT_GPIO_H
 
 #include "stm8s.h"
+#include <stdbool.h>
 
 #define RELAY_GPIO_PORT         (GPIOA)
 #define RELAY_GPIO_PIN          (GPIO_PIN_3)
@@ -35,6 +36,6 @@
 #define IND_POINT_PORT          (GPIOD)
 #define IND_POINT_PIN           (GPIO_PIN_2)
 
-void initPeriph(void);
+void initGPIO(void);
 
-#endif //INITPERIPH_H
+#endif //INIT_GPIO_H

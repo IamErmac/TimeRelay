@@ -260,6 +260,7 @@
                     <name>CCIncludePath2</name>
                     <state>$PROJ_DIR$\..\user\inc</state>
                     <state>$PROJ_DIR$\..\config\inc</state>
+                    <state>$PROJ_DIR$\..\periph\inc</state>
                     <state>$PROJ_DIR$\..\..\Libraries\STM8S_StdPeriph_Driver\inc</state>
                 </option>
                 <option>
@@ -807,9 +808,27 @@
         </settings>
     </configuration>
     <group>
-        <name>Config</name>
+        <name>IT_Config</name>
         <file>
             <name>$PROJ_DIR$\..\config\src\stm8s_it.c</name>
+        </file>
+    </group>
+    <group>
+        <name>Periph</name>
+        <file>
+            <name>$PROJ_DIR$\..\periph\src\init_clock.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\periph\src\init_gpio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\periph\src\init_memory.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\periph\src\init_periph.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\periph\src\init_timer1.c</name>
         </file>
     </group>
     <group>
@@ -875,13 +894,13 @@
             <name>$PROJ_DIR$\..\user\src\counter.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\user\src\counterGUI.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\user\src\eepromSettings.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\user\src\indicator.c</name>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\user\src\initPeriph.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\user\src\main.c</name>
@@ -894,6 +913,9 @@
         </file>
         <file>
             <name>$PROJ_DIR$\..\user\src\modeWork.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\user\src\sevenDigit.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\user\src\SWTimer.c</name>

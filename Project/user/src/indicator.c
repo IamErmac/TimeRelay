@@ -13,13 +13,10 @@ enum{
 };
 //Extern global variables
 //Static global variables
+static uint8_t indicatorBuffer[SEG_ALL];
 //Static functions prototypes
 static void writeDataToIndicator(uint8_t data, uint8_t segment);
-static uint8_t convertASCIIToIndicatorNumber(uint8_t rawDigit);
 //Global varibales
-uint8_t indicatorBuffer[SEG_ALL];
-uint8_t indicatorRawDataBuffer[IND_RAW_DATA];
-bool isGUIUpdated = true;
 //-----------------------------------------------------------------------------
 
 static void writeDataToIndicator(uint8_t data, uint8_t segment){
@@ -91,59 +88,22 @@ void switchIndicatorDigit(void){
     curDigit = 0;
 }
 
-static uint8_t convertASCIIToIndicatorNumber(uint8_t rawDigit){
-  switch(rawDigit){
-    default: return SYM_BLANK;
-    case '0': return SYM_0;
-    case '1': return SYM_1;
-    case '2': return SYM_2;
-    case '3': return SYM_3;
-    case '4': return SYM_4;
-    case '5': return SYM_5;
-    case '6': return SYM_6;
-    case '7': return SYM_7;
-    case '8': return SYM_8;
-    case '9': return SYM_9;
-    case '.': return SYM_DOT;
-    case '-': return SYM_MINUS;
-    case 'a':
-    case 'A': return SYM_A;
-    case 'B':
-    case 'b': return SYM_b;
-    case 'c': return SYM_c;
-    case 'C': return SYM_C;
-    case 'D':
-    case 'd': return SYM_d;
-    case 'e':
-    case 'E': return SYM_E;
-    case 'f':
-    case 'F': return SYM_F;
-    case 'H': return SYM_H;
-    case 'h': return SYM_h;
-    case 'n': return SYM_n;
-    case 't': return SYM_t;
-    case 'p':
-    case 'P': return SYM_P;
-    case 'L': return SYM_L;
-  }
-}
-
 void updateIndicatorData(uint8_t* str){
   uint8_t digitCounter = 0;
-  uint8_t currentDigit = convertASCIIToIndicatorNumber('0');
+  uint8_t currentDigit = convertASCIIToSevenDigit(' ');
 
   for(uint8_t i = 0; i < IND_RAW_DATA; i++){
-    if (digitCounter == SEG_ALL)
+    if ((digitCounter == SEG_ALL) || !str[i])
       break;
     
     if (str[i] == '.'){
-      currentDigit += SYM_DOT;
+      currentDigit += convertASCIIToSevenDigit('.');
       indicatorBuffer[digitCounter] = currentDigit;
       digitCounter++;
       continue;
     }else{
-      currentDigit = convertASCIIToIndicatorNumber(str[i]);
-      if (str[i + 1] != '.'){
+      currentDigit = convertASCIIToSevenDigit(str[i]);
+      if ((i + 1 < IND_RAW_DATA)&&(str[i + 1] != '.')){
         //update
         indicatorBuffer[digitCounter] = currentDigit;
         digitCounter++;
@@ -153,4 +113,3 @@ void updateIndicatorData(uint8_t* str){
     }
   }
 }
-

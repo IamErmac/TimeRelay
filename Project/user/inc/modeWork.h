@@ -5,10 +5,10 @@
 #include <stdbool.h>
 #include "stateMachine.h"
 #include "button.h"
-#include "indicator.h"
 #include "SWTimer.h"
 #include "counter.h"
-#include "initPeriph.h"
+#include "init_gpio.h"
+#include "counterGUI.h"
 
 void initWorkMode(void);
 uint8_t handleWorkMode(void);

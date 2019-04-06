@@ -30,7 +30,6 @@
 /* Private defines -----------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-extern uint8_t indicatorBuffer[SEG_ALL];
 
 void main(void)
 {

@@ -29,7 +29,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm8s_it.h"
-#include "initPeriph.h"
+#include "init_gpio.h"
 #include "button.h"
 #include "SWTimer.h"
 
