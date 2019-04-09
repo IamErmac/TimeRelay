@@ -15,26 +15,17 @@ timeCount_t highStateTime = {.seconds = 0, .minutes = 0, .hours = 0};
 //-----------------------------------------------------------------------------
 
 static void incrementData(uint8_t *data, uint8_t edge){
-  uint8_t tmp = *data;
-  if (tmp < edge)
-    tmp++;
+  if (*data < edge)
+    (*data)++;
   else
-    tmp = 0;
-  *data = tmp;
+    (*data) = 0;
 }
 
 static void decrementData(uint8_t *data, uint8_t edge){
-  uint8_t tmp = *data;
-  if(tmp)
-    tmp--;
+  if (*data)
+    (*data)--;
   else
-    tmp = edge;
-  *data = tmp;
-  //Bug occurs in production hex file. Code below doesn't work
-  //if(*data)
-  //  *data--;
-  //else
-  //  *data = edge;
+    *data = edge;
 }
 
 void incrementTime(timeCount_t *time, uint8_t currentTime)
