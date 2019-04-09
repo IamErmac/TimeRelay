@@ -14,7 +14,7 @@ typedef enum{
 	MODE_SHUTDOWN,
 	MODE_MENU,
 	MODE_ENTER,
-        MODE_WORK,
+	MODE_WORK,
 	MODE_MAX
 }modes_e;
 
